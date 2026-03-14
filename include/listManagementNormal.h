@@ -38,7 +38,7 @@ typedef struct SearchResult {
 
 UnrolledList constructorListInit();
 Page *constructorPageInit(int pageCapacity);
-int askElementsNumber();
+int askPageCapacity();
 
 void insert(UnrolledList *list, int value);
 void removeAtLocation(UnrolledList *list, ElementLocation position);
