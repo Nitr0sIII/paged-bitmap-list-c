@@ -1,7 +1,7 @@
 all: unrolledLinkedListNormal unrolledLinkedListDynamic
 
-unrolledLinkedListNormal: unrolledLinkedListNormal.o listManagement.o
-	gcc -o unrolledLinkedListNormal unrolledLinkedListNormal.o listManagement.o
+unrolledLinkedListNormal: unrolledLinkedListNormal.o listManagementNormal.o
+	gcc -o unrolledLinkedListNormal unrolledLinkedListNormal.o listManagementNormal.o
 
 unrolledLinkedListDynamic: unrolledLinkedListDynamic.o listManagementDynamic.o
 	gcc -o unrolledLinkedListDynamic unrolledLinkedListDynamic.o listManagementDynamic.o
@@ -19,8 +19,8 @@ listManagementDynamic.o: ./src/listManagementDynamic.c
 unrolledLinkedListNormal.o: unrolledLinkedListNormal.c 
 	gcc -c unrolledLinkedListNormal.c
 
-listManagement.o: ./src/listManagement.c
-	gcc -c ./src/listManagement.c
+listManagementNormal.o: ./src/listManagementNormal.c
+	gcc -c ./src/listManagementNormal.c
 
 #########################################################################
 

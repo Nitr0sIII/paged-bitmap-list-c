@@ -1,4 +1,5 @@
-#include "../include/listManagement.h"
+#include "../include/listManagementNormal.h"
+#include "../include/colorConsole.h"
 
 UnrolledList constructorListInit() {
   UnrolledList tmpList;
@@ -69,7 +70,7 @@ void insert(UnrolledList *list, int value) {
   }
 }
 
-void removePosition(UnrolledList *list, ElementLocation position) {
+void removeAtLocation(UnrolledList *list, ElementLocation position) {
   if (list->head == NULL) {
     printf("Error : \"head\" pointer is NULL");
     return;
@@ -190,33 +191,40 @@ void compact(UnrolledList *list) {
 //////////////////////////////////////////////////////////////////////
 
 void printLocations(SearchResult occurrences) {
-  int count = 0;
-  printf("Position found :\n\n");
+  printf(CYN "Positions found: %d\n" RESET, occurrences.number);
   for (int i = 0; i < occurrences.number; i++) {
-    printf("values : %d\n", occurrences.founds[count].value);
-    printf("Bitmap Index : %d\n", occurrences.founds[count].index);
-    printf("Adress : %p\n\n", occurrences.founds[count].pageRef);
-    count++;
+    printf("  " YEL "[%d]" RESET " -> page " GRN "%p\n" RESET, occurrences.founds[i].index, (void *)occurrences.founds[i].pageRef);
   }
 }
 
 void printUnrolledList(UnrolledList *list) {
   Page *current = list->head;
-  int currentPageIndex = 0;
+  int pageIndex = 0;
+
+  printf(BLU "\nLIST: int\n" RESET);
 
   while (current != NULL) {
-    printf("Page %d\n\n", currentPageIndex);
+    printf(CYN "\nPage %d : " RESET, pageIndex);
     for (int i = 0; i < list->pageCapacity; i++) {
       if (current->bitmap & (1 << i)) {
-        printf("Value %d : %d\n", i, current->values[i]);
+        printf(GRN "1" RESET);
       } else {
-        printf("Value %d : (empty)\n", i);
+        printf(RED "0" RESET);
+      }
+    }
+    printf("\n");
+
+    for (int i = 0; i < list->pageCapacity; i++) {
+      if (current->bitmap & (1 << i)) {
+        printf("  " MAG "[" RESET "%d" MAG "] " RESET, i);
+        printf(GRN " %d\n" RESET, current->values[i]);
+      } else {
+        printf("  " MAG "[" RESET "%d" MAG "] " RED " (empty)\n" RESET, i);
       }
     }
 
-    printf("\n");
     current = current->next;
-    currentPageIndex++;
+    pageIndex++;
   }
 }
 

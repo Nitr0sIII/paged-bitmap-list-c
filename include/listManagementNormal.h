@@ -41,7 +41,7 @@ Page *constructorPageInit(int pageCapacity);
 int askElementsNumber();
 
 void insert(UnrolledList *list, int value);
-void removePosition(UnrolledList *list, ElementLocation position);
+void removeAtLocation(UnrolledList *list, ElementLocation position);
 void compact(UnrolledList *list);
 
 SearchResult research(UnrolledList *list, int value);
@@ -50,7 +50,5 @@ void printLocations(SearchResult occurrences);
 void printUnrolledList(UnrolledList *list);
 
 void freeAllPages(Page *head);
-
-void normalListMain();
 
 #endif
