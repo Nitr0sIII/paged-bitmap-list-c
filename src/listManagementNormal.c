@@ -6,7 +6,7 @@ UnrolledList constructorListInit() {
 
   tmpList.itemCount = 0;
   tmpList.pageCount = 0;
-  tmpList.pageCapacity = askElementsNumber();
+  tmpList.pageCapacity = askPageCapacity();
   tmpList.head = constructorPageInit(tmpList.pageCapacity);
 
   return tmpList;
@@ -15,9 +15,11 @@ UnrolledList constructorListInit() {
 Page *constructorPageInit(int numByPage) {
   Page *tmpPage = malloc(sizeof(Page));
 
+  // Allocate storage for the values contained in the page.
   tmpPage->values = malloc(sizeof(int) * numByPage);
   tmpPage->bitmap = 0;
 
+  // Mark every slot as empty at startup.
   for (int i = 0; i < numByPage; i++) {
     tmpPage->values[i] = INIT_VALUE;
   }
@@ -27,7 +29,7 @@ Page *constructorPageInit(int numByPage) {
   return tmpPage;
 }
 
-int askElementsNumber() {
+int askPageCapacity() {
   int num = 0;
   do {
     printf("\nChoose the number of elements in a page (1-8): ");
@@ -40,6 +42,7 @@ int askElementsNumber() {
 //////////////////////////////////////////////////////////////////////
 
 void insert(UnrolledList *list, int value) {
+  // Create the first page if the list is still empty.
   if (list->head == NULL) {
     list->head = constructorPageInit(list->pageCapacity);
     if (list->head == NULL) {
@@ -50,6 +53,7 @@ void insert(UnrolledList *list, int value) {
 
   Page *current = list->head;
 
+  // Scan pages until a free slot is found.
   while (current != NULL) {
     for (int i = 0; i < list->pageCapacity; i++) {
       if (!(current->bitmap & (1 << i))) {
@@ -60,6 +64,7 @@ void insert(UnrolledList *list, int value) {
       }
     }
     if (current->next == NULL) {
+      // Add page when all current pages are full.
       current->next = constructorPageInit(list->pageCapacity);
       if (current->next == NULL) {
         return;
@@ -76,6 +81,7 @@ void removeAtLocation(UnrolledList *list, ElementLocation position) {
     return;
   }
 
+  // Clear the slot and update the bitmap.
   position.pageRef->values[position.index] = INIT_VALUE;
   position.pageRef->bitmap &= ~(1 << position.index);
   list->itemCount--;
@@ -95,6 +101,7 @@ SearchResult research(UnrolledList *list, int value) {
   Page *current = list->head;
   int count = 0;
 
+  // Walk through every occupied slot and keep matching positions.
   while (current != NULL) {
     for (int i = 0; i < list->pageCapacity; i++) {
       if (current->bitmap & (1 << i)) {
@@ -140,6 +147,7 @@ void compact(UnrolledList *list) {
     current = list->head;
     ElementLocation refHoleFound;
 
+    // Push values leftward into the first hole encountered.
     while (current != NULL) {
       for (int i = 0; i < list->pageCapacity; i++) {
         if (!(current->bitmap & (1 << i))) {
@@ -167,6 +175,7 @@ void compact(UnrolledList *list) {
   Page *previous = NULL;
   current = list->head;
 
+  // Remove pages that became completely empty after compaction.
   while (current != NULL) {
     if (current->bitmap == 0) {
       Page *next = current->next;
@@ -232,6 +241,7 @@ void printUnrolledList(UnrolledList *list) {
 
 void freeAllPages(Page *head) {
   Page *current = head;
+  // Free pages one by one from head to the end.
   while (current != NULL) {
     Page *next = current->next;
     free(current->values);

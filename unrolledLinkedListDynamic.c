@@ -8,10 +8,12 @@ int main(int argc, char const *argv[]) {
   srand(time(NULL));
   int a;
 
+  // Build one typed list for each supported data type.
   UnrolledList_int listInt = constructorListInit_int();
   UnrolledList_char listChar = constructorListInit_char();
   UnrolledList_float listFloat = constructorListInit_float();
 
+  // Insert random values to populate the three examples.
   for (int i = 0; i < 7; i++) {
     insert_int(&listInt, rand() % 11);
     insert_char(&listChar, (rand() % 10) + 65);
@@ -22,6 +24,7 @@ int main(int argc, char const *argv[]) {
 
   printUnrolledList_int(&listInt);
 
+  // Remove every matching occurrence, then compact the list.
   SearchResult_int occInt = research_int(&listInt, 9);
   for (int i = 0; i < occInt.number; i++) {
     removeAtLocation_int(&listInt, occInt.founds[i]);
@@ -44,6 +47,7 @@ int main(int argc, char const *argv[]) {
 
   printUnrolledList_char(&listChar);
 
+  // Repeat the same workflow on the char-based list.
   SearchResult_char occChar = research_char(&listChar, 68);
   for (int i = 0; i < occChar.number; i++) {
     removeAtLocation_char(&listChar, occChar.founds[i]);
@@ -66,6 +70,7 @@ int main(int argc, char const *argv[]) {
 
   printUnrolledList_float(&listFloat);
 
+  // Same demonstration again for the float-based list.
   SearchResult_float occFloat = research_float(&listFloat, 9.1);
   for (int i = 0; i < occFloat.number; i++) {
     removeAtLocation_float(&listFloat, occFloat.founds[i]);
