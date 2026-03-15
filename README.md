@@ -63,7 +63,7 @@ In this project, the page capacity is chosen by the user between `1` and `8`, be
 5. **Compaction**:
 	- Move values leftward into the first holes found
 	- Reduce fragmentation after deletions
-	- Remove empty pages at the end in the normal implementation
+	- Remove empty pages after compaction in both implementations
 
 ## 📂 Project Structure
 
@@ -89,7 +89,7 @@ unrolled-linked-list-c/
 - **Insertion**: Add values while reusing free slots when possible
 - **Search**: Retrieve every occurrence of a given value
 - **Deletion by location**: Remove values precisely from known positions
-- **Compaction**: Move values to fill holes left by deletions
+- **Compaction**: Move values to fill holes left by deletions and free empty pages
 - **Typed generic version**: Support `int`, `char`, and `float` through macros
 - **Colored output**: Display page occupancy and values with ANSI colors
 - **Memory cleanup**: Free all allocated pages before program exit
@@ -269,7 +269,7 @@ Dans ce projet, la capacité d’une page est choisie par l’utilisateur entre 
 5. **Compaction** :
 	- Déplace les valeurs vers les premiers trous disponibles
 	- Réduit la fragmentation après suppression
-	- Supprime les pages vides à la fin dans la version normale
+	- Supprime les pages vides après compaction dans les deux implémentations
 
 ## 📂 Structure du projet
 
@@ -295,7 +295,7 @@ unrolled-linked-list-c/
 - **Insertion** : ajout de valeurs en réutilisant les cases libres
 - **Recherche** : récupération de toutes les occurrences d’une valeur
 - **Suppression par position** : suppression précise à partir d’une localisation connue
-- **Compaction** : déplacement des valeurs pour remplir les trous
+- **Compaction** : déplacement des valeurs pour remplir les trous et suppression des pages vides
 - **Version générique typée** : prise en charge de `int`, `char` et `float` via macros
 - **Affichage coloré** : visualisation des bitmaps et des valeurs avec des couleurs ANSI
 - **Nettoyage mémoire** : libération de toutes les pages allouées avant la fin du programme
